@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         imageView = (ImageView) findViewById(R.id.image_view);
+        Log.i("TAG", "这尼玛到底是哪个界面");
         method12();
     }
 
