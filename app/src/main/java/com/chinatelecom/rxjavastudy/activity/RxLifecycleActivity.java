@@ -3,16 +3,21 @@ package com.chinatelecom.rxjavastudy.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.chinatelecom.rxjavastudy.R;
+import com.chinatelecom.rxjavastudy.api.rxhelper.RxSchedulersHelper;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
+import com.trello.rxlifecycle.RxLifecycle;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
 
 /**
  * 使用RxLifecycle管理生命週期
@@ -52,5 +57,13 @@ public class RxLifecycleActivity extends RxAppCompatActivity {
     @Subscribe(thread = EventThread.MAIN_THREAD, tags = {@Tag(BusAction.SHOW_TIME)})
     public void showTime(Long aLong) {
         tvDisplay.setText(String.valueOf(aLong));
+    }
+
+    private void lifecycleDemo() {
+        Observable.interval(1, TimeUnit.SECONDS)
+                .compose(RxSchedulersHelper.<Long>io_main())
+                .compose(RxLifecycle.bind(lifecycle()))
+                .subscribe();
+
     }
 }
