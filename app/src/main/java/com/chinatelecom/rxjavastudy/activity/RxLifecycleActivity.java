@@ -8,23 +8,25 @@ import android.widget.TextView;
 
 import com.chinatelecom.rxjavastudy.R;
 import com.chinatelecom.rxjavastudy.api.rxhelper.RxSchedulersHelper;
+import com.chinatelecom.rxjavastudy.base.BaseActivity;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
+import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * 使用RxLifecycle管理生命週期
  * Created by Administrator on 2016/10/29.
  */
 
-public class RxLifecycleActivity extends RxAppCompatActivity {
+public class RxLifecycleActivity extends BaseActivity {
 
     private TextView tvDisplay;
 
@@ -34,6 +36,16 @@ public class RxLifecycleActivity extends RxAppCompatActivity {
         setContentView(R.layout.activity_lifecycle);
         RxBus.get().register(this);
         tvDisplay = (TextView) findViewById(R.id.tv_display);
+
+        LifecycleTransformer<Long> bind = RxLifecycle.bind(lifecycle());
+        Observable.interval(1, TimeUnit.SECONDS)
+                .compose(bind)
+                .subscribe(new Action1<Long>() {
+                    @Override
+                    public void call(Long aLong) {
+
+                    }
+                });
         findViewById(R.id.btn_finish).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

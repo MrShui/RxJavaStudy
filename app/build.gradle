@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 24
@@ -21,7 +22,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
     compile 'io.reactivex:rxjava:1.1.6'
@@ -31,8 +31,11 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.1.2'
-
-    compile 'com.trello:rxlifecycle:0.8.0'
+    //    compile 'com.trello:rxlifecycle:0.8.0'
     compile 'com.trello:rxlifecycle-components:0.8.0'
     compile 'com.hwangjr.rxbus:rxbus:1.0.5'
+    compile 'me.yokeyword:fragmentation:0.7.13'
+
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }
