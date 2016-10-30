@@ -5,8 +5,12 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import com.chinatelecom.rxjavastudy.RxTag;
+import com.chinatelecom.rxjavastudy.ui.OneFragment;
+import com.hwangjr.rxbus.RxBus;
 import com.trello.rxlifecycle.LifecycleProvider;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
@@ -23,7 +27,6 @@ import rx.subjects.BehaviorSubject;
 
 public abstract class BaseFragment extends SupportFragment implements LifecycleProvider<FragmentEvent> {
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
-    private boolean mIsViewPagerFragment;//是否是viewpager加载的fragment
 
     @Override
     @NonNull
@@ -118,12 +121,17 @@ public abstract class BaseFragment extends SupportFragment implements LifecycleP
     }
 
     private boolean mInited = false;//是否已經初始化標記
+    private boolean mIsViewPagerFragment;//是否是viewpager加载的fragment
+    private boolean mShouldLazyInit;
     private Bundle mSavedInstanceState;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (mIsViewPagerFragment) return;
+        if (mIsViewPagerFragment && mShouldLazyInit) {
+            initLazy(mSavedInstanceState);
+            return;
+        }
 
         if (savedInstanceState == null) {
             if (!isHidden()) {
@@ -153,8 +161,8 @@ public abstract class BaseFragment extends SupportFragment implements LifecycleP
         super.setUserVisibleHint(isVisibleToUser);
         mIsViewPagerFragment = true;
         if (!mInited && isVisibleToUser) {
+            mShouldLazyInit = true;
             mInited = true;
-            initLazy(mSavedInstanceState);
         }
     }
 
@@ -162,4 +170,18 @@ public abstract class BaseFragment extends SupportFragment implements LifecycleP
      * 懒加载
      */
     protected abstract void initLazy(@Nullable Bundle savedInstanceState);
+
+        @Override
+    public boolean onBackPressedSupport() {
+        if (getChildFragmentManager().getBackStackEntryCount() > 1) {
+            popChild();
+        } else {
+            if (this instanceof OneFragment) {   // 如果是 第一个Fragment 则退出app
+                _mActivity.finish();
+            } else {                                    // 如果不是,则回到第一个Fragment
+                RxBus.get().post(RxTag.BACK_TO_FIRST_FRAGMENT, "");
+            }
+        }
+        return true;
+    }
 }

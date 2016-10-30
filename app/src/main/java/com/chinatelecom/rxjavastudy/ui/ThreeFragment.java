@@ -44,7 +44,7 @@ public class ThreeFragment extends BaseFragment {
         tabLayout.addTab(tabLayout.newTab().setText("圆桌"));
         tabLayout.addTab(tabLayout.newTab().setText("热门"));
         tabLayout.addTab(tabLayout.newTab().setText("收藏"));
-        viewPager.setAdapter(new ViewPagerAdapter(getFragmentManager()));
+        viewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
     }
 

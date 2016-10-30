@@ -9,6 +9,13 @@ import android.view.ViewGroup;
 
 import com.chinatelecom.rxjavastudy.R;
 import com.chinatelecom.rxjavastudy.ui.base.BaseFragment;
+import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle.RxLifecycle;
+
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.functions.Action1;
 
 /**
  * Created by Shui on 16/10/30.
@@ -29,5 +36,13 @@ public class TwoFragment extends BaseFragment {
     @Override
     protected void initLazy(@Nullable Bundle savedInstanceState) {
         Log.i("TAG", "TwoFragment");
+        Observable.interval(1, TimeUnit.SECONDS)
+                .compose(this.<Long>bindToLifecycle())
+                .subscribe(new Action1<Long>() {
+                    @Override
+                    public void call(Long aLong) {
+                        Log.i("TAG", "测试RxLifecycle：" + aLong);
+                    }
+                });
     }
 }

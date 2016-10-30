@@ -7,8 +7,12 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.chinatelecom.rxjavastudy.R;
+import com.chinatelecom.rxjavastudy.RxTag;
 import com.chinatelecom.rxjavastudy.ui.base.BaseActivity;
 import com.chinatelecom.rxjavastudy.ui.base.BaseFragment;
+import com.hwangjr.rxbus.RxBus;
+import com.hwangjr.rxbus.annotation.Subscribe;
+import com.hwangjr.rxbus.annotation.Tag;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +48,7 @@ public class MainActivity extends BaseActivity {
             mBaseFragments[1] = findFragment(TwoFragment.class);
             mBaseFragments[2] = findFragment(ThreeFragment.class);
         }
+        RxBus.get().register(this);
     }
 
     @OnClick({R.id.tv_one, R.id.tv_two, R.id.tv_three})
@@ -68,5 +73,16 @@ public class MainActivity extends BaseActivity {
             showHideFragment(mBaseFragments[position], mBaseFragments[mLastPosition]);
         }
         mLastPosition = position;
+    }
+
+    @Subscribe(tags = {@Tag(RxTag.BACK_TO_FIRST_FRAGMENT)})
+    public void backToFirstFragment(String s) {
+        safeStartFragment(0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RxBus.get().unregister(this);
     }
 }

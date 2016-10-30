@@ -94,4 +94,9 @@ public class BaseActivity extends SupportActivity implements LifecycleProvider<A
     protected FragmentAnimator onCreateFragmentAnimator() {
         return new DefaultNoAnimator();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

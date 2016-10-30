@@ -8,7 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chinatelecom.rxjavastudy.R;
+import com.chinatelecom.rxjavastudy.ResultModel;
+import com.chinatelecom.rxjavastudy.api.ApiHelper;
+import com.chinatelecom.rxjavastudy.api.bean.req.ReqProfessorInteraction;
+import com.chinatelecom.rxjavastudy.api.bean.resp.ResProfessorInteraction;
+import com.chinatelecom.rxjavastudy.api.rxhelper.RxResultHelper;
+import com.chinatelecom.rxjavastudy.api.rxhelper.RxSchedulersHelper;
 import com.chinatelecom.rxjavastudy.ui.base.BaseFragment;
+
+import java.util.List;
+
+import rx.functions.Action1;
 
 /**
  * Created by Shui on 16/10/30.
@@ -29,5 +39,17 @@ public class OneFragment extends BaseFragment {
     @Override
     protected void initLazy(@Nullable Bundle savedInstanceState) {
         Log.i("TAG", "OneFragment");
+        ReqProfessorInteraction reqProfessorInteraction = new ReqProfessorInteraction();
+        reqProfessorInteraction.setId("11");
+        ApiHelper.getApi().professorInteraction(reqProfessorInteraction)
+                .compose(RxSchedulersHelper.<ResultModel<List<ResProfessorInteraction>>>io_main())
+                .compose(RxResultHelper.<List<ResProfessorInteraction>>handleResult())
+                .compose(this.<List<ResProfessorInteraction>>bindToLifecycle())
+                .subscribe(new Action1<List<ResProfessorInteraction>>() {
+                    @Override
+                    public void call(List<ResProfessorInteraction> resProfessorInteractions) {
+
+                    }
+                });
     }
 }
