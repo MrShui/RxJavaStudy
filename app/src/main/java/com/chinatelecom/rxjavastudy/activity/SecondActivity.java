@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.chinatelecom.rxjavastudy.R;
-import com.chinatelecom.rxjavastudy.base.BaseActivity;
+import com.chinatelecom.rxjavastudy.ui.base.BaseActivity;
 import com.hwangjr.rxbus.RxBus;
 
 import java.util.concurrent.TimeUnit;

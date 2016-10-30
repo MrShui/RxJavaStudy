@@ -11,23 +11,24 @@ import com.chinatelecom.rxjavastudy.R;
 import com.chinatelecom.rxjavastudy.ui.base.BaseFragment;
 
 /**
- * Created by Shui on 16/10/30.
+ * Created by Administrator on 2016/10/30.
  */
 
-public class OneFragment extends BaseFragment {
-    public static OneFragment newInstance() {
-        return new OneFragment();
+public class CollectFragment extends BaseFragment {
+    public static CollectFragment newInstance() {
+        CollectFragment collectFragment = new CollectFragment();
+        return collectFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View inflate = inflater.inflate(R.layout.fragment_one, container, false);
+        View inflate = inflater.inflate(R.layout.fragment_collect, container, false);
         return inflate;
     }
 
     @Override
     protected void initLazy(@Nullable Bundle savedInstanceState) {
-        Log.i("TAG", "OneFragment");
+        Log.i("TAG", "CollectFragment");
     }
 }

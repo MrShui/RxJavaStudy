@@ -1,4 +1,4 @@
-package com.chinatelecom.rxjavastudy.base;
+package com.chinatelecom.rxjavastudy.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -21,9 +21,9 @@ import rx.subjects.BehaviorSubject;
  * Created by Shui on 16/10/29.
  */
 
-public class BaseFragment extends SupportFragment implements LifecycleProvider<FragmentEvent> {
-
+public abstract class BaseFragment extends SupportFragment implements LifecycleProvider<FragmentEvent> {
     private final BehaviorSubject<FragmentEvent> lifecycleSubject = BehaviorSubject.create();
+    private boolean mIsViewPagerFragment;//是否是viewpager加载的fragment
 
     @Override
     @NonNull
@@ -58,6 +58,7 @@ public class BaseFragment extends SupportFragment implements LifecycleProvider<F
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         lifecycleSubject.onNext(FragmentEvent.CREATE);
+        mSavedInstanceState = savedInstanceState;
     }
 
     @Override
@@ -115,4 +116,50 @@ public class BaseFragment extends SupportFragment implements LifecycleProvider<F
         lifecycleSubject.onNext(FragmentEvent.DETACH);
         super.onDetach();
     }
+
+    private boolean mInited = false;//是否已經初始化標記
+    private Bundle mSavedInstanceState;
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (mIsViewPagerFragment) return;
+
+        if (savedInstanceState == null) {
+            if (!isHidden()) {
+                mInited = true;
+                initLazy(null);
+            }
+        } else {
+            // isSupportHidden()仅在saveIns tanceState!=null时有意义,是库帮助记录Fragment状态的方法
+            if (!isSupportHidden()) {
+                mInited = true;
+                initLazy(savedInstanceState);
+            }
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!mInited && !hidden) {
+            mInited = true;
+            initLazy(mSavedInstanceState);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        mIsViewPagerFragment = true;
+        if (!mInited && isVisibleToUser) {
+            mInited = true;
+            initLazy(mSavedInstanceState);
+        }
+    }
+
+    /**
+     * 懒加载
+     */
+    protected abstract void initLazy(@Nullable Bundle savedInstanceState);
 }

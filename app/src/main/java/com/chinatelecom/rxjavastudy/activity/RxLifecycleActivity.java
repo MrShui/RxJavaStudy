@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.chinatelecom.rxjavastudy.R;
 import com.chinatelecom.rxjavastudy.api.rxhelper.RxSchedulersHelper;
-import com.chinatelecom.rxjavastudy.base.BaseActivity;
+import com.chinatelecom.rxjavastudy.ui.base.BaseActivity;
 import com.hwangjr.rxbus.RxBus;
 import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;

@@ -1,4 +1,4 @@
-package com.chinatelecom.rxjavastudy.base;
+package com.chinatelecom.rxjavastudy.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -13,6 +13,9 @@ import com.trello.rxlifecycle.android.ActivityEvent;
 import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 
 import me.yokeyword.fragmentation.SupportActivity;
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
+import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
+import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
@@ -85,5 +88,10 @@ public class BaseActivity extends SupportActivity implements LifecycleProvider<A
     protected void onDestroy() {
         lifecycleSubject.onNext(ActivityEvent.DESTROY);
         super.onDestroy();
+    }
+
+    @Override
+    protected FragmentAnimator onCreateFragmentAnimator() {
+        return new DefaultNoAnimator();
     }
 }
