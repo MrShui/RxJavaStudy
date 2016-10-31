@@ -2,8 +2,6 @@ package com.chinatelecom.rxjavastudy.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,40 +15,33 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Administrator on 2016/10/30.
+ * Created by Shui on 16/10/31.
  */
 
-public class DetailFragment extends BaseFragment {
-    private static String mTitle;
-    private static final String TAG = "Fragmentation";
+public class DetailNextFragment extends BaseFragment {
+    @BindView(R.id.btn_finish)
+    Button btnFinish;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.btn_next)
-    Button btnNext;
-
-    public static DetailFragment newInstance(String item) {
-        mTitle = item;
-        return new DetailFragment();
+    public static DetailNextFragment newInstance() {
+        return new DetailNextFragment();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View inflate = inflater.inflate(R.layout.fragment_detail, null, false);
+        View inflate = inflater.inflate(R.layout.fragment_next_detail, null);
         ButterKnife.bind(this, inflate);
         return inflate;
     }
 
     @Override
     protected void initLazy(@Nullable Bundle savedInstanceState) {
-        toolbar.setTitleTextColor(ActivityCompat.getColor(_mActivity, android.R.color.white));
-        toolbar.setTitle(mTitle);
+
     }
 
-    @OnClick(R.id.btn_next)
-    public void nextClick() {
-        start(DetailNextFragment.newInstance());
+    @OnClick(R.id.btn_finish)
+    public void finishClick() {
+        pop();
     }
 
     @Override

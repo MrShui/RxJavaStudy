@@ -2,6 +2,7 @@ package com.chinatelecom.rxjavastudy.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -24,6 +25,8 @@ import me.yokeyword.fragmentation.SupportFragment;
  */
 
 public class MainActivity extends BaseActivity {
+    public final static String BACK_FIRST_FRAGMENT = "back_first_fragment";
+
     @BindView(R.id.fl_container)
     FrameLayout flContainer;
     @BindView(R.id.tv_one)
@@ -55,29 +58,29 @@ public class MainActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_one:
-                safeStartFragment(0);
+                showHideFragment(mBaseFragments[0], mBaseFragments[mLastPosition]);
+                mLastPosition = 0;
                 break;
             case R.id.tv_two:
-                safeStartFragment(1);
+                showHideFragment(mBaseFragments[1], mBaseFragments[mLastPosition]);
+                mLastPosition = 1;
                 break;
             case R.id.tv_three:
-                safeStartFragment(2);
+                showHideFragment(mBaseFragments[2], mBaseFragments[mLastPosition]);
+                mLastPosition = 2;
                 break;
         }
     }
 
     private void safeStartFragment(int position) {
-        if (findFragment(mBaseFragments[position].getClass()) == null) {
-            start(mBaseFragments[position]);
-        } else {
-            showHideFragment(mBaseFragments[position], mBaseFragments[mLastPosition]);
-        }
-        mLastPosition = position;
+        showHideFragment(mBaseFragments[position], mBaseFragments[mLastPosition]);
     }
 
-    @Subscribe(tags = {@Tag(RxTag.BACK_TO_FIRST_FRAGMENT)})
-    public void backToFirstFragment(String s) {
-        safeStartFragment(0);
+    @Subscribe(tags = {@Tag(RxTag.BACK_FRAGMENT)})
+    public void backFragment(String s) {
+        if (TextUtils.equals(s, BACK_FIRST_FRAGMENT)) {
+            safeStartFragment(0);
+        }
     }
 
     @Override

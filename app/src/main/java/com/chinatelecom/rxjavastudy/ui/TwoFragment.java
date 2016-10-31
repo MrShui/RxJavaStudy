@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chinatelecom.rxjavastudy.R;
+import com.chinatelecom.rxjavastudy.RxTag;
 import com.chinatelecom.rxjavastudy.ui.base.BaseFragment;
+import com.hwangjr.rxbus.RxBus;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.RxLifecycle;
 
@@ -35,14 +37,20 @@ public class TwoFragment extends BaseFragment {
 
     @Override
     protected void initLazy(@Nullable Bundle savedInstanceState) {
-        Log.i("TAG", "TwoFragment");
-        Observable.interval(1, TimeUnit.SECONDS)
-                .compose(this.<Long>bindToLifecycle())
-                .subscribe(new Action1<Long>() {
-                    @Override
-                    public void call(Long aLong) {
-                        Log.i("TAG", "测试RxLifecycle：" + aLong);
-                    }
-                });
+//        Log.i("TAG", "TwoFragment");
+//        Observable.interval(1, TimeUnit.SECONDS)
+//                .compose(this.<Long>bindToLifecycle())
+//                .subscribe(new Action1<Long>() {
+//                    @Override
+//                    public void call(Long aLong) {
+//                        Log.i("TAG", "测试RxLifecycle：" + aLong);
+//                    }
+//                });
+    }
+
+    @Override
+    public boolean onBackPressedSupport() {
+        RxBus.get().post(RxTag.BACK_FRAGMENT, MainActivity.BACK_FIRST_FRAGMENT);
+        return true;
     }
 }

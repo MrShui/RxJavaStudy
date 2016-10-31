@@ -12,7 +12,7 @@ import android.util.Log;
  */
 public class L {
 
-    public static boolean isDebug = false;
+    public static boolean isDebug = true;
 
     /**
      * Log单次只能输出不多于4000字符，多于的要分次循环输出

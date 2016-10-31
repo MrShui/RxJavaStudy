@@ -5,5 +5,6 @@ package com.chinatelecom.rxjavastudy;
  */
 
 public final class RxTag {
-    public final static String BACK_TO_FIRST_FRAGMENT = "back_to_first_fragment";
+    public final static String BACK_FRAGMENT = "back_to_first_fragment";
+
 }

@@ -14,4 +14,10 @@
             android:layout_height="?android:attr/actionBarSize"
             android:background="?attr/colorPrimary" />
     </android.support.design.widget.AppBarLayout>
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="下一个界面" />
 </LinearLayout>
